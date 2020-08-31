@@ -54,14 +54,17 @@
   template: src=tibero_service.j2 dest=/lib/systemd/system/tibero.service mode=644
   notify:
     - reload systemctl
+ 
+- name: Reload systemd
+  systemd: daemon-reload=yes
 
 - name: Tibero - Start Tibero Database {{tb_sid}}
   service: name=tibero.service state=started enabled=yes
 
-  #- name: Boot Database {{tb_sid}} into NORMAL mode 
-  #shell: "source ~/.bash_profile && tbboot"
-  #become: yes
-  #become_user: "{{tb_user}}"  
+#- name: Boot Database {{tb_sid}} into NORMAL mode 
+#  shell: "source ~/.bash_profile && tbboot"
+#  become: yes
+#  become_user: "{{tb_user}}"  
 
 - name: Run system.sh 
   shell: "source ~/.bash_profile && sh $TB_HOME/scripts/system.sh -p1 tibero -p2 syscat -a1 y -a2 y -a3 y -a4 y"
