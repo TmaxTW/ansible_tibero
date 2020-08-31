@@ -1,0 +1,39 @@
+#-------------------------------------------------------------------------------
+#
+# RDBMS initialization parameter
+#
+#-------------------------------------------------------------------------------
+DB_NAME={{tb_sid}}
+LISTENER_PORT={{tb_listener_port}}
+CONTROL_FILES="{{tb_data}}/control1.ctl","{{tb_data}}/control2.ctl"
+MAX_SESSION_COUNT={{max_session_count}}
+TOTAL_SHM_SIZE={{ total_shm_size }}
+MEMORY_TARGET={{ memory_target }}
+DB_CREATE_FILE_DEST="{{db_create_file_dest}}"
+LOG_DEFAULT_DEST="{{log_default_dest}}"
+
+# Log Size
+#-------------------------------------------------------------------------------
+LOG_BUFFER=200M
+DBMS_LOG_TOTAL_SIZE_LIMIT=3G
+LSNR_LOG_TOTAL_SIZE_LIMIT=1G
+SLOG_TOTAL_SIZE_LIMIT=2G
+ILOG_TOTAL_SIZE_LIMIT=2G
+
+# Tuning
+#-------------------------------------------------------------------------------
+_ADAPTIVE_CURSOR_SHARING=N
+_OPT_BIND_PEEKING=N
+#_INLINE_WITH_QUERY=N
+GATHER_SQL_EXEC_TIME=Y
+GATHER_SQL_PLAN_STAT=Y
+BIND_VARIABLE_CAPTURE=Y
+
+# Misc
+#-------------------------------------------------------------------------------
+BOOT_WITH_AUTO_DOWN_CLEAN=Y
+TRACE_LOG_DISPLAY_YEAR=Y
+_SLOG_DISPLAY_YEAR=Y
+JOB_HISTORY_LOG=Y
+JOB_TRACE_LOG=Y
+OPEN_CURSORS=300

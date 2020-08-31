@@ -1,0 +1,8 @@
+- name: os settings
+  include_tasks: os.yml 
+- name: user environment
+  include_tasks: user.yml 
+- name: upload and install packages
+  include_tasks: install.yml 
+- name: create database  
+  include_tasks: createdb.yml 

@@ -1,0 +1,14 @@
+[Unit]
+Description=Tibero Database
+Requires=network.target
+After=syslog.target network.target
+[Service]
+Type=forking
+EnvironmentFile=/etc/sysconfig/tibero
+ExecStart=/bin/bash --login -c 'PATH=$TB_PATH:$PATH LD_LIBRARY_PATH=$TB_LD_LIBRARY_PATH:$LD_LIBRARY_PATH exec {{tb_home}}/bin/tbboot'
+ExecStop=/bin/bash --login -c 'PATH=$TB_PATH:$PATH LD_LIBRARY_PATH=$TB_LD_LIBRARY_PATH:$LD_LIBRARY_PATH exec {{tb_home}}/bin/tbdown'
+User={{tb_user}}
+PIDFile=/var/lock/subsys/tibero.pid
+Environment="TB_SID={{tb_sid}}; TB_HOME={{tb_home}}"
+[Install]
+WantedBy=multi-user.target

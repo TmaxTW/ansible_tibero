@@ -1,0 +1,25 @@
+- name: Ensure group {{tb_group}} exists
+  group:
+    name: "{{tb_group}}"
+    state: present
+
+- name: "Create user accounts and add users to groups"
+  user:
+    name: "{{tb_user}}"
+    password: "{{tb_passwd}}"
+    groups:
+      - "{{tb_group}}"
+      - wheel
+
+- name: Update DBA user profile
+  lineinfile:
+      dest: /home/{{tb_user}}/.bash_profile
+      state: present
+      line: "{{ item }}"
+  with_items:
+    - "# Tibero 6"
+    - "unset USERNAME"
+    - "export TB_HOME={{tb_home}}"
+    - "export TB_SID={{tb_sid}}"
+    - "export LD_LIBRARY_PATH=$TB_HOME/lib:$TB_HOME/client/lib:$LD_LIBRARY_PATH"
+    - "export PATH=$TB_HOME/bin:$TB_HOME/client/bin:$PATH"

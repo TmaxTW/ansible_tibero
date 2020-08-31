@@ -1,0 +1,62 @@
+- name: Install required packages
+  package:
+    state: latest
+    name: 
+      - binutils
+      - compat-libcap1
+      - compat-libstdc++-33
+      - compat-libstdc++-33.i686
+      - gcc
+      - gcc-c++
+      - glibc
+      - glibc.i686
+      - glibc-devel
+      - glibc-devel.i686
+      - ksh
+      - libgcc
+      - libgcc.i686
+      - libstdc++
+      - libstdc++.i686
+      - libstdc++-devel
+      - libstdc++-devel.i686
+      - libaio
+      - libaio.i686
+      - libaio-devel
+      - libaio-devel.i686
+      - libXtst
+      - libXtst.i686
+      - libXi
+      - libXi.i686
+      - make
+      - sysstat
+
+- name: Configure kernel parameters - /etc/sysctl.conf
+  lineinfile:
+      dest: /etc/sysctl.conf
+      line: "{{item}}"
+  with_items:
+    - "fs.aio-max-nr=4194304"
+    - "fs.file-max = 6815744"
+    - "kernel.sem = 10000 32000 10000 10000"
+    - "net.core.rmem_default = 262144"
+    - "net.core.rmem_max = 4194304"
+    - "net.core.wmem_default = 262144"
+    - "net.core.wmem_max = 4194304"
+    - "net.ipv4.ip_local_port_range = 1024 65535"
+    - "net.ipv4.tcp_rmem = 10240 87380 6291456"
+    - "net.ipv4.tcp_wmem = 10240 87380 419430"
+
+- name: Activate kernel parameters - sysctl -p 
+  command: "sysctl -p"
+
+- name: System Limits - /etc/security/limit.conf 
+  lineinfile:
+      dest: /etc/security/limits.conf
+      state: present
+      line: "{{item}}"
+  with_items:
+    - "# Tibero 6"
+    - "{{tb_user}} soft nofile 65536"
+    - "{{tb_user}} hard nofile 65536"
+    - "{{tb_user}} soft nproc 16384" 
+    - "{{tb_user}} nproc 16384"

@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  role_name: tibero
+  author: Conrad Yang
+  description: Tibero database server for RHEL/CentOS.
+  company: "TmaxSoft"
+  license: "license (BSD)"
+  min_ansible_version: 2.4
+  platforms:
+    - name: EL
+  versions:
+    - 8
+  categories:
+    - database:sql
+  galaxy_tags:
+    - database
+    - tibero
+    - db
+    - sql
+
+dependencies: []
+

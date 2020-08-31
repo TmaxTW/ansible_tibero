@@ -1,0 +1,59 @@
+- name: mkdir staging directory for packages
+  file:
+    path: "{{staging_path}}"
+    state: directory
+  become: yes
+  become_user: "{{tb_user}}"  
+
+- name: mkdir TB_BASE @ {{tb_base}}
+  file:
+    path: "{{tb_base}}"
+    state: directory
+    owner: "{{tb_user}}"
+    group: "{{tb_group}}"
+    mode: 0770
+    recurse: yes
+  become: yes
+
+- name: mkdir TB_HOME @ {{tb_home}}
+  file:
+    path: "{{tb_home}}"
+    state: directory
+    owner: "{{tb_user}}"
+    group: "{{tb_group}}"
+    mode: 0770
+  become: yes
+
+- name: mkdir TB_DATA @ {{tb_data}}
+  file:
+    path: "{{tb_data}}"
+    state: directory
+    owner: "{{tb_user}}"
+    group: "{{tb_group}}"
+    mode: 0770
+  become: yes
+
+- name: upload tibero package file
+  copy:
+    src: "{{tb_pkg_name}}"
+    dest: "{{staging_path}}/"
+  become: yes
+  become_user: "{{tb_user}}"  
+
+- name: unarchive binary
+  unarchive: 
+    src : "{{item}}" 
+    dest: "{{tb_base}}"
+    remote_src: yes
+    # mode : 0755
+  become: yes
+  become_user: "{{tb_user}}"  
+  with_items:
+    - "{{staging_path}}/{{tb_pkg_name}}"
+
+- name: upload license file
+  copy:
+    src: "license.xml"
+    dest: "{{tb_home}}/license/"
+  become: yes
+  become_user: "{{tb_user}}"  

@@ -1,0 +1,19 @@
+---
+tb_user: tibero
+tb_passwd: tibero
+tb_group: dba
+tb_base : /opt/tmaxsoft
+staging_path: /home/{{tb_user}}/staging
+tb_home : "{{tb_base}}/tibero6"
+tb_data : "{{tb_home}}/database/{{tb_sid}}"
+db_create_file_dest: "{{tb_data}}"
+log_default_dest: "{{tb_home}}/instance/{{tb_sid}}/log"
+tb_sid : tibero
+tb_pkg_name: "tibero6-bin-FS07_CS_1912-linux64-174424-opt.tar.gz"
+total_shm_size: 2G
+memory_target: 4G
+redo_size: 100M
+tb_listener_port: 8629
+max_session_count: 100
+db_character_set: UTF8
+db_national_charater_set: UTF16
