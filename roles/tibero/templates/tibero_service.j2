@@ -3,7 +3,7 @@ Description=Tibero Database
 Requires=network.target
 After=syslog.target network.target
 [Service]
-Type=forking
+Type=simple
 EnvironmentFile=/etc/sysconfig/tibero
 ExecStart=/bin/bash --login -c 'PATH=$TB_PATH:$PATH LD_LIBRARY_PATH=$TB_LD_LIBRARY_PATH:$LD_LIBRARY_PATH exec {{tb_home}}/bin/tbboot'
 ExecStop=/bin/bash --login -c 'PATH=$TB_PATH:$PATH LD_LIBRARY_PATH=$TB_LD_LIBRARY_PATH:$LD_LIBRARY_PATH exec {{tb_home}}/bin/tbdown'

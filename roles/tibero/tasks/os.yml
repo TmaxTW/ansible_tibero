@@ -59,4 +59,4 @@
     - "{{tb_user}} soft nofile 65536"
     - "{{tb_user}} hard nofile 65536"
     - "{{tb_user}} soft nproc 16384" 
-    - "{{tb_user}} nproc 16384"
+    - "{{tb_user}} hard nproc 16384"
