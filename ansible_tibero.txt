@@ -1,0 +1,111 @@
+
+PLAY [install tibero] **********************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [centos]
+
+TASK [tibero : os settings] ****************************************************
+included: /home/cpyang/Desktop/ansible_tibero/roles/tibero/tasks/os.yml for centos
+
+TASK [tibero : Install required packages] **************************************
+changed: [centos]
+
+TASK [tibero : Configure kernel parameters - /etc/sysctl.conf] *****************
+changed: [centos] => (item=fs.aio-max-nr=4194304)
+changed: [centos] => (item=fs.file-max = 6815744)
+changed: [centos] => (item=kernel.sem = 10000 32000 10000 10000)
+changed: [centos] => (item=net.core.rmem_default = 262144)
+changed: [centos] => (item=net.core.rmem_max = 4194304)
+changed: [centos] => (item=net.core.wmem_default = 262144)
+changed: [centos] => (item=net.core.wmem_max = 4194304)
+changed: [centos] => (item=net.ipv4.ip_local_port_range = 1024 65535)
+changed: [centos] => (item=net.ipv4.tcp_rmem = 10240 87380 6291456)
+changed: [centos] => (item=net.ipv4.tcp_wmem = 10240 87380 419430)
+
+TASK [tibero : Activate kernel parameters - sysctl -p] *************************
+changed: [centos]
+
+TASK [tibero : System Limits - /etc/security/limit.conf] ***********************
+changed: [centos] => (item=# Tibero 6)
+changed: [centos] => (item=tibero soft nofile 65536)
+changed: [centos] => (item=tibero hard nofile 65536)
+changed: [centos] => (item=tibero soft nproc 16384)
+changed: [centos] => (item=tibero hard nproc 16384)
+
+TASK [tibero : user environment] ***********************************************
+included: /home/cpyang/Desktop/ansible_tibero/roles/tibero/tasks/user.yml for centos
+
+TASK [tibero : Ensure group dba exists] ****************************************
+changed: [centos]
+
+TASK [tibero : Create user accounts and add users to groups] *******************
+changed: [centos]
+
+TASK [tibero : Update DBA user profile] ****************************************
+changed: [centos] => (item=# Tibero 6)
+changed: [centos] => (item=unset USERNAME)
+changed: [centos] => (item=export TB_HOME=/opt/tmaxsoft/tibero6)
+changed: [centos] => (item=export TB_SID=tibero)
+changed: [centos] => (item=export LD_LIBRARY_PATH=$TB_HOME/lib:$TB_HOME/client/lib:$LD_LIBRARY_PATH)
+changed: [centos] => (item=export PATH=$TB_HOME/bin:$TB_HOME/client/bin:$PATH)
+
+TASK [tibero : upload and install packages] ************************************
+included: /home/cpyang/Desktop/ansible_tibero/roles/tibero/tasks/install.yml for centos
+
+TASK [tibero : mkdir staging directory for packages] ***************************
+changed: [centos]
+
+TASK [tibero : mkdir TB_BASE @ /opt/tmaxsoft] **********************************
+changed: [centos]
+
+TASK [tibero : mkdir TB_HOME @ /opt/tmaxsoft/tibero6] **************************
+changed: [centos]
+
+TASK [tibero : mkdir TB_DATA @ /opt/tmaxsoft/tibero6/database/tibero] **********
+changed: [centos]
+
+TASK [tibero : upload tibero package file] *************************************
+changed: [centos]
+
+TASK [tibero : unarchive binary] ***********************************************
+changed: [centos] => (item=/home/tibero/staging/tibero6-bin-FS07_CS_1912-linux64-174424-opt.tar.gz)
+
+TASK [tibero : upload license file] ********************************************
+changed: [centos]
+
+TASK [tibero : create database] ************************************************
+included: /home/cpyang/Desktop/ansible_tibero/roles/tibero/tasks/createdb.yml for centos
+
+TASK [tibero : Run gen_tip.sh] *************************************************
+changed: [centos]
+
+TASK [tibero : Copy template file into Tibero Initialization Parameters (TIP) file for tibero] ***
+changed: [centos]
+
+TASK [tibero : Boot Database tibero into NOMOUNT mode] *************************
+changed: [centos]
+
+TASK [tibero : Create Database tibero] *****************************************
+changed: [centos]
+
+TASK [tibero : Tibero - Create sysconfig file] *********************************
+changed: [centos]
+
+TASK [tibero : Tibero - Create systemd Unit file] ******************************
+changed: [centos]
+
+TASK [tibero : Reload systemd] *************************************************
+ok: [centos]
+
+TASK [tibero : Tibero - Start Tibero Database tibero] **************************
+changed: [centos]
+
+TASK [tibero : Run system.sh] **************************************************
+changed: [centos]
+
+RUNNING HANDLER [tibero : reload systemctl] ************************************
+ok: [centos]
+
+PLAY RECAP *********************************************************************
+centos                     : ok=29   changed=22   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
