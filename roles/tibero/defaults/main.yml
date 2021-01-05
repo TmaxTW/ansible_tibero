@@ -9,7 +9,7 @@ tb_data : "{{tb_home}}/database/{{tb_sid}}"
 db_create_file_dest: "{{tb_data}}"
 log_default_dest: "{{tb_home}}/instance/{{tb_sid}}/log"
 tb_sid : tibero
-tb_pkg_name: "tibero6-bin-FS07_CS_1912-linux64-174424-opt.tar.gz"
+tb_pkg_name: "tibero6-bin-FS07_CS_2005-linux64-186728-opt-tested.tar.gz"
 total_shm_size: 2G
 memory_target: 4G
 redo_size: 100M

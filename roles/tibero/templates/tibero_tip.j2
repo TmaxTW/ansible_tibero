@@ -11,6 +11,16 @@ TOTAL_SHM_SIZE={{ total_shm_size }}
 MEMORY_TARGET={{ memory_target }}
 DB_CREATE_FILE_DEST="{{db_create_file_dest}}"
 LOG_DEFAULT_DEST="{{log_default_dest}}"
+NLS_LANG_AT_BOOT=UTF8
+NLS_LENGTH_SEMANTICS="CHAR"
+
+# Audit Trials
+#-------------------------------------------------------------------------------
+AUDIT_FILE_SIZE=100K
+AUDIT_LOG_TOTAL_SIZE_LIMIT=10M
+AUDIT_SYS_OPERATIONS=YES
+AUDIT_TRAIL=OS
+_LOG_FD_RETENTION_PERIOD=60
 
 # Log Size
 #-------------------------------------------------------------------------------
