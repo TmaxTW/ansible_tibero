@@ -2,6 +2,7 @@
 tb_user: tibero
 tb_base: /opt/tmaxsoft
 tb_passwd: '$6$FpwzW7cBVP/3K2$CAWIA9PU49uKTexwTrLRDcO4LAiVOaCi4P3r6zGEn6DJhcXJwAwXMwlolPWMrdS6MT2x1faGjWXwWEnSv5Fog.'
+tb_sys_passwd: tibero
 tb_group: dba
 tb_sid: tibero
 total_shm_size: 2G

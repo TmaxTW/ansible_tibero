@@ -1,8 +1,19 @@
+
+
 - name: Run gen_tip.sh 
-  shell: "source ~/.bash_profile && {{tb_home}}/config/gen_tip.sh"
+  shell: "{{tb_home}}/config/gen_tip.sh"
+  args:
+    chdir: "{{tb_home}}/config"
+    executable: /bin/bash
+  environment:
+    TB_HOME: "{{tb_home}}"
+    TB_SID: "{{tb_sid}}"
+    PATH: "{{tb_home}}/bin:{{tb_home}}/config:{{tb_home}}/client/bin:{{ansible_env.PATH}}"
+    LD_LIBRARY_PATH: "{{tb_home}}/lib:{{tb_home}}/client/lib"
   run_once: true
   become: yes
-  become_user: "{{tb_user}}"  
+  become_user: "{{tb_user}}"
+  become_flags: '-i'
 
 - name: Copy template file into Tibero Initialization Parameters (TIP) file for {{tb_sid}}
   template:
@@ -10,63 +21,94 @@
     dest: "{{tb_home}}/config/{{tb_sid}}.tip"
 
 - name: Boot Database {{tb_sid}} into NOMOUNT mode 
-  shell: "source ~/.bash_profile && tbboot nomount"
+  shell: "tbboot nomount"
+  args:
+    executable: /bin/bash
+  args:
+    chdir: "{{tb_home}}/config"
+    executable: /bin/bash
+  environment:
+    TB_HOME: "{{tb_home}}"
+    TB_SID: "{{tb_sid}}"
+    PATH: "{{tb_home}}/bin:{{tb_home}}/config:{{tb_home}}/client/bin:{{ansible_env.PATH}}"
+    LD_LIBRARY_PATH: "{{tb_home}}/lib:{{tb_home}}/client/lib"
   become: yes
   become_user: "{{tb_user}}"  
+  become_flags: '-i'
   ignore_errors: yes
   run_once: true
 
+- name: Tibero - createdb.sql
+  template: src=createdb.j2 dest={{tb_home}}/instance/{{tb_sid}}/createdb.sql
+
 - name: Create Database {{tb_sid}}
-  shell:  | 
-          source ~/.bash_profile  
-          tbsql sys/tibero << EOF >> /dev/null
-              create database
-              user sys identified by tibero
-              maxinstances 8
-              maxdatafiles 100
-              character set  {{db_character_set}}
-              national character set {{db_national_charater_set}}
-              logfile group 0 ('redo001.log') size {{redo_size}},
-                      group 1 ('redo002.log') size {{redo_size}},
-                      group 2 ('redo003.log') size {{redo_size}} 
-              maxloggroups 255
-              maxlogmembers 8
-              noarchivelog
-                datafile 'system001.dtf' size 100M autoextend on next 100M maxsize unlimited
-                default temporary tablespace TEMP
-                  tempfile 'temp001.dtf' size 100M autoextend on next 100M maxsize unlimited
-                  extent management local autoallocate
-                undo tablespace UNDO
-                  datafile 'undo001.dtf' size 100M autoextend on next 100M maxsize unlimited
-                  extent management local autoallocate;
-              ;
-            exit
-            EOF
+  shell:  tbsql sys/{{tb_sys_passwd}} @{{tb_home}}/instance/{{tb_sid}}/createdb.sql
+  args:
+    executable: /bin/bash
+  environment:
+    TB_HOME: "{{tb_home}}"
+    TB_SID: "{{tb_sid}}"
+    PATH: "{{tb_home}}/bin:{{tb_home}}/config:{{tb_home}}/client/bin:{{ansible_env.PATH}}"
+    LD_LIBRARY_PATH: "{{tb_home}}/lib:{{tb_home}}/client/lib"
   register: stdout
   run_once: true
   become: yes
   become_user: "{{tb_user}}"  
+  become_flags: '-i'
 
-- name: Tibero - Create sysconfig file
-  template: src=tibero_envs.j2 dest=/etc/sysconfig/tibero
+- name: Tibero - Create Service Startup Script
+  template: src=tibero_service.sh.j2 dest={{tb_home}}/bin/tibero_service.sh mode=755
 
 - name: Tibero - Create systemd Unit file
-  template: src=tibero_service.j2 dest=/lib/systemd/system/tibero.service mode=644
+  template: src=tibero.service.j2 dest=/lib/systemd/system/tibero.service mode=644
   notify:
     - reload systemctl
  
 - name: Reload systemd
   systemd: daemon-reload=yes
 
-- name: Tibero - Start Tibero Database {{tb_sid}}
-  service: name=tibero.service state=started enabled=yes
+- name: Tibero - createdb.sql
+  template: src=createdb.sql.j2 dest={{tb_home}}/instance/{{tb_sid}}/createdb.sql mode=644
+
+- name: Start Database {{tb_sid}} into NORMAL mode
+  shell: "tbdown; sleep 5; tbboot"
+  args:
+    executable: /bin/bash
+  args:
+    chdir: "{{tb_home}}/config"
+    executable: /bin/bash
+  environment:
+    TB_HOME: "{{tb_home}}"
+    TB_SID: "{{tb_sid}}"
+    PATH: "{{tb_home}}/bin:{{tb_home}}/config:{{tb_home}}/client/bin:{{ansible_env.PATH}}"
+    LD_LIBRARY_PATH: "{{tb_home}}/lib:{{tb_home}}/client/lib"
+  become: yes
+  become_user: "{{tb_user}}"  
+  become_flags: '-i'
+  ignore_errors: yes
+  run_once: true
+
+#- name: Tibero - Start Tibero Database {{tb_sid}}
+# service: name=tibero.service state=started enabled=yes
 
 #- name: Boot Database {{tb_sid}} into NORMAL mode 
 #  shell: "source ~/.bash_profile && tbboot"
 #  become: yes
 #  become_user: "{{tb_user}}"  
+#  become_flags: '-i'
 
 - name: Run system.sh 
-  shell: "source ~/.bash_profile && sh $TB_HOME/scripts/system.sh -p1 tibero -p2 syscat -a1 y -a2 y -a3 y -a4 y"
+  shell: "sh $TB_HOME/scripts/system.sh -p1 tibero -p2 syscat -a1 y -a2 y -a3 y -a4 y"
+  args:
+    executable: /bin/bash
+  args:
+    chdir: "{{tb_home}}"
+    executable: /bin/bash
+  environment:
+    TB_HOME: "{{tb_home}}"
+    TB_SID: "{{tb_sid}}"
+    PATH: "{{tb_home}}/bin:{{tb_home}}/config:{{tb_home}}/client/bin:{{ansible_env.PATH}}"
+    LD_LIBRARY_PATH: "{{tb_home}}/lib:{{tb_home}}/client/lib"
   become: yes
   become_user: "{{tb_user}}"  
+  become_flags: '-i'

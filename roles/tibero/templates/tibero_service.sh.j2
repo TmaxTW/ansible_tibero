@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+export PATH
+if [ ! -v TB_HOME ]; then
+	export TB_HOME=$TB_BASE/tibero
+fi
+if [ ! -v TB_SID ]; then
+	TB_SID={{tb_sid}}
+fi
+export TB_SID
+if [ ! -v TB_SYS_PASSWD ]; then
+	TB_SYS_PASSWD={{tb_passwd}}
+fi
+export TB_SYS_PASSWD
+export LD_LIBRARY_PATH=$TB_HOME/lib:$TB_HOME/client/lib
+export JAVA_HOME=/usr/java/latest
+export PATH=$PATH:$TB_HOME/bin:$TB_HOME/client/bin:$JAVA_HOME/bin
+
+########### SIGINT handler ############
+function handle_int() {
+	echo "Stopping database - $TB_SID"
+	echo "SIGINT received, shutting down database!"
+	tbsql sys/$TB_SYS_PASSWD << EOF
+alter system checkpoint;
+alter system checkpoint;
+EOF
+	tbdown -t IMMEDIATE
+	sleep 5
+	running=0
+	exit 0
+}
+
+########### SIGTERM handler ############
+function handle_term() {
+	echo "Stopping database - $TB_SID"
+	echo "SIGTERM received, shutting down database!"
+	tbsql sys/$TB_SYS_PASSWD << EOF
+alter system checkpoint;
+alter system checkpoint;
+EOF
+	tbdown -t IMMEDIATE
+	sleep 5
+	running=0
+	exit 0
+}
+
+########### SIGKILL handler ############
+function handle_kill() {
+	echo "Stopping database - $TB_SID"
+	echo "SIGKILL received, aborting database!"
+	tbsql sys/$TB_SYS_PASSWD << EOF
+alter system checkpoint;
+alter system checkpoint;
+EOF
+	tbdown -t ABORT
+	sleep 5
+	running=0
+	exit 1
+}
+
+# Set SIGINT handler
+trap 'handle_int' SIGINT
+
+# Set SIGTERM handler
+trap 'handle_term' SIGTERM SIGHUP
+
+# Set SIGKILL handler
+trap 'handle_kill' SIGKILL
+
+##################################################################
+# start database
+##################################################################
+echo Starting database - $TB_SID...
+tbboot
+##################################################################
+
+running=1
+
+while true; do
+  if [ "$running" = "1" ]; then
+    sleep 1
+  else
+    break
+  fi
+done

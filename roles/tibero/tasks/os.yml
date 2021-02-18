@@ -1,4 +1,20 @@
 - name: Install required packages
+  when: ansible_os_family == "Debian"
+  package:
+    state: latest
+    name: 
+      - binutils
+      - libcap2
+      - gcc
+      - ksh
+      - libaio1
+      - libxtst6
+      - libxi6
+      - make
+      - sysstat
+
+- name: Install required packages
+  when: ansible_os_family == "RedHat"
   package:
     state: latest
     name: 

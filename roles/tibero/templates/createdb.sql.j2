@@ -1,0 +1,20 @@
+create database
+user sys identified by {{tb_sys_passwd}}
+maxinstances 8
+maxdatafiles 100
+character set  {{db_character_set}}
+national character set {{db_national_charater_set}}
+logfile group 0 ('redo001.log') size {{redo_size}},
+	group 1 ('redo002.log') size {{redo_size}},
+	group 2 ('redo003.log') size {{redo_size}}
+maxloggroups 255
+maxlogmembers 8
+noarchivelog
+datafile 'system001.dtf' size 100M autoextend on next 100M maxsize unlimited
+default temporary tablespace TEMP
+tempfile 'temp001.dtf' size 100M autoextend on next 100M maxsize unlimited
+extent management local autoallocate
+undo tablespace UNDO
+datafile 'undo001.dtf' size 100M autoextend on next 100M maxsize unlimited
+extent management local autoallocate;
+exit;

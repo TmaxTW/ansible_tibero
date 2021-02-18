@@ -9,11 +9,10 @@
     password: "{{tb_passwd}}"
     groups:
       - "{{tb_group}}"
-      - wheel
 
 - name: Update DBA user profile
   lineinfile:
-      dest: /home/{{tb_user}}/.bash_profile
+      dest: /home/{{tb_user}}/.bashrc
       state: present
       line: "{{ item }}"
   with_items:
@@ -22,4 +21,4 @@
     - "export TB_HOME={{tb_home}}"
     - "export TB_SID={{tb_sid}}"
     - "export LD_LIBRARY_PATH=$TB_HOME/lib:$TB_HOME/client/lib:$LD_LIBRARY_PATH"
-    - "export PATH=$TB_HOME/bin:$TB_HOME/client/bin:$PATH"
+    - "export PATH=$TB_HOME/bin:$TB_HOME/config:$TB_HOME/client/bin:$PATH"

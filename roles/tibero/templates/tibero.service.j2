@@ -1,0 +1,22 @@
+[Unit]
+Description=Tibero Database - {{tb_sid}}
+Requires=network.target
+After=syslog.target network.target
+
+[Service]
+# Configures the time to wait before service is stopped forcefully.
+TimeoutStopSec=300
+
+User={{tb_user}}
+PIDFile=/var/lock/subsys/{{tb_sid}}.pid
+Environment=TB_BASE={{tb_base}}
+Environment=TB_HOME={{tb_home}}
+Environment=TB_SID={{tb_sid}}
+Environment=TB_USER={{tb_user}}
+Environment=LD_LIBRARY_PATH={{tb_home}}/lib:{{tb_home}}/client/lib
+Environment=PATH={{tb_home}}/bin:{{tb_home}}/client/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+ExecStart={{tb_home}}/bin/tibero_service.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -1,13 +1,14 @@
 ---
 tb_user: tibero
-tb_passwd: tibero
+tb_passwd: '$6$FpwzW7cBVP/3K2$CAWIA9PU49uKTexwTrLRDcO4LAiVOaCi4P3r6zGEn6DJhcXJwAwXMwlolPWMrdS6MT2x1faGjWXwWEnSv5Fog.'
+tb_sys_passwd: tibero
 tb_group: dba
 tb_base : /opt/tmaxsoft
 staging_path: /home/{{tb_user}}/staging
 tb_home : "{{tb_base}}/tibero6"
-tb_data : "{{tb_home}}/database/{{tb_sid}}"
+tb_data : "{{tb_base}}/database/{{tb_sid}}"
 db_create_file_dest: "{{tb_data}}"
-log_default_dest: "{{tb_home}}/instance/{{tb_sid}}/log"
+log_default_dest: "{{tb_base}}/instance/{{tb_sid}}/log"
 tb_sid : tibero
 tb_pkg_name: "tibero6-bin-FS07_CS_2005-linux64-186728-opt-tested.tar.gz"
 total_shm_size: 2G
