@@ -11,7 +11,9 @@ TOTAL_SHM_SIZE={{ total_shm_size }}
 MEMORY_TARGET={{ memory_target }}
 DB_CREATE_FILE_DEST="{{db_create_file_dest}}"
 LOG_DEFAULT_DEST="{{log_default_dest}}"
-NLS_LANG_AT_BOOT=UTF8
+#NLS_LANG_AT_BOOT=UTF8
+#NLS_LANG_AT_BOOT=ZHT16MSWIN950
+NLS_LANG_AT_BOOT="{{db_character_set}}"
 NLS_LENGTH_SEMANTICS="CHAR"
 
 # Audit Trials
@@ -24,7 +26,6 @@ _LOG_FD_RETENTION_PERIOD=60
 
 # Log Size
 #-------------------------------------------------------------------------------
-LOG_BUFFER=200M
 DBMS_LOG_TOTAL_SIZE_LIMIT=3G
 LSNR_LOG_TOTAL_SIZE_LIMIT=1G
 SLOG_TOTAL_SIZE_LIMIT=2G
@@ -38,6 +39,21 @@ _OPT_BIND_PEEKING=N
 GATHER_SQL_EXEC_TIME=Y
 GATHER_SQL_PLAN_STAT=Y
 BIND_VARIABLE_CAPTURE=Y
+DBWR_CNT={{db_writer_count}}
+LOG_BUFFER={{log_buffer}}
+DB_CACHE_SIZE={{db_cache_size}}
+USE_NET_KEEPALIVE=Y
+ACTIVE_SESSION_HISTORY=Y
+_NEW_DD_LOCK_MODE=Y
+#_LOCK_DIST_CNT=10
+#_SHARED_POOL_ALLOC_CNT=8
+#_TX_SGMT_SET_BM_NOWAIT=Y
+#_USGMT_UNIFORM_EXTSIZE=256
+#_USGMT_ONLINE_MAX=1000
+#_DB_BLOCK_LRU_LATCHES=128
+#
+#_LOG_INC_CHECKPOINT_TIMEOUT=1
+#_LOG_INC_CKPT_LAG_LIMIT_PCT=20
 
 # Misc
 #-------------------------------------------------------------------------------
