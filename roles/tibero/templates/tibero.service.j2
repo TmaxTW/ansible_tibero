@@ -1,5 +1,5 @@
 [Unit]
-Description=Tibero Database - {{tb_sid}}
+Description=Tibero Database - tibero
 Requires=network.target
 After=syslog.target network.target
 
@@ -7,8 +7,8 @@ After=syslog.target network.target
 # Configures the time to wait before service is stopped forcefully.
 TimeoutStopSec=300
 
-User={{tb_user}}
-PIDFile=/var/lock/subsys/{{tb_sid}}.pid
+User=tibero
+PIDFile=/var/lock/subsys/tibero.pid
 Environment=TB_BASE={{tb_base}}
 Environment=TB_HOME={{tb_home}}
 Environment=TB_SID={{tb_sid}}

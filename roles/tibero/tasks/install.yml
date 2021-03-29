@@ -9,10 +9,10 @@
   file:
     path: "{{tb_base}}"
     state: directory
-    owner: "{{tb_user}}"
-    group: "{{tb_group}}"
-    mode: 0770
-    recurse: yes
+#   owner: "{{tb_user}}"
+#   group: "{{tb_group}}"
+#   mode: 0770
+#   recurse: no
   become: yes
 
 - name: mkdir TB_HOME @ {{tb_home}}

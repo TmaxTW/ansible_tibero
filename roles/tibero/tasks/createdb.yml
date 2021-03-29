@@ -12,7 +12,7 @@
     LD_LIBRARY_PATH: "{{tb_home}}/lib:{{tb_home}}/client/lib"
   run_once: true
   become: yes
-  become_user: "{{tb_user}}"
+  become_user: "{{tb_user}}" 
   become_flags: '-i'
 
 - name: Copy template file into Tibero Initialization Parameters (TIP) file for {{tb_sid}}
@@ -42,7 +42,7 @@
   template: src=createdb.j2 dest={{tb_home}}/instance/{{tb_sid}}/createdb.sql
 
 - name: Create Database {{tb_sid}}
-  shell:  tbsql sys/{{tb_sys_passwd}} @{{tb_home}}/instance/{{tb_sid}}/createdb.sql
+  shell:  tbsql sys/tibero @{{tb_home}}/instance/{{tb_sid}}/createdb.sql
   args:
     executable: /bin/bash
   environment:
@@ -56,11 +56,13 @@
   become_user: "{{tb_user}}"  
   become_flags: '-i'
 
+#- name: Tibero - Create sysconfig file
+#  template: src=tibero_envs.j2 dest=/etc/sysconfig/tibero
 - name: Tibero - Create Service Startup Script
-  template: src=tibero_service.sh.j2 dest={{tb_home}}/bin/tibero_service.sh mode=755
+  template: src=tibero_service_shell_script.j2 dest={{tb_home}}/bin/tibero_service.sh mode=755
 
 - name: Tibero - Create systemd Unit file
-  template: src=tibero.service.j2 dest=/lib/systemd/system/tibero.service mode=644
+  template: src=tibero_service.j2 dest=/lib/systemd/system/tibero.service mode=644
   notify:
     - reload systemctl
  
@@ -68,7 +70,7 @@
   systemd: daemon-reload=yes
 
 - name: Tibero - createdb.sql
-  template: src=createdb.sql.j2 dest={{tb_home}}/instance/{{tb_sid}}/createdb.sql mode=644
+  template: src=createdb.j2 dest={{tb_home}}/instance/{{tb_sid}}/createdb.sql
 
 - name: Start Database {{tb_sid}} into NORMAL mode
   shell: "tbdown; sleep 5; tbboot"

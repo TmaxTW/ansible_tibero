@@ -1,14 +1,14 @@
 --- 
-tb_user: tibero
-tb_base: /opt/tmaxsoft
-tb_passwd: '$6$FpwzW7cBVP/3K2$CAWIA9PU49uKTexwTrLRDcO4LAiVOaCi4P3r6zGEn6DJhcXJwAwXMwlolPWMrdS6MT2x1faGjWXwWEnSv5Fog.'
-tb_sys_passwd: tibero
-tb_group: dba
-tb_sid: tibero
-total_shm_size: 2G
-memory_target: 4G
-redo_size: 100M
-tb_listener_port: 8629
-max_session_count: 100
-db_character_set: UTF8
-db_national_charater_set: UTF16
+#tb_user: tibero
+#tb_base: /opt/tmaxsoft
+#tb_passwd: '$6$FpwzW7cBVP/3K2$CAWIA9PU49uKTexwTrLRDcO4LAiVOaCi4P3r6zGEn6DJhcXJwAwXMwlolPWMrdS6MT2x1faGjWXwWEnSv5Fog.'
+#tb_sys_passwd: tibero
+#tb_group: dba
+#tb_sid: tibero
+#total_shm_size: 2G
+#memory_target: 4G
+#redo_size: 100M
+#tb_listener_port: 8629
+#max_session_count: 100
+#db_character_set: ZHT16MSWIN950
+#db_national_charater_set: UTF16
