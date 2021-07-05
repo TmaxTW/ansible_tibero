@@ -31,8 +31,8 @@ Ansible Role for Tibero Installation &amp; Configuration
       vars: 
         tb_user: tibero
         tb_base: /opt/tmaxsoft
-        tb_passwd: tibero
-        tb_pkg_name: "tibero6-bin-FS07_CS_2005-linux64-192657-opt-20210315120516.tar.gz"
+        tb_passwd: '$6$FpwzW7cBVP/3K2$CAWIA9PU49uKTexwTrLRDcO4LAiVOaCi4P3r6zGEn6DJhcXJwAwXMwlolPWMrdS6MT2x1faGjWXwWEnSv5Fog.'
+        tb_pkg_name: "tibero6-bin-FS07_CS_2005-linux64-186930-opt-tested.tar.gz"
         tb_sys_passwd: tibero
         tb_group: dba
         tb_sid: tibero

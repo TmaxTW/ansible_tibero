@@ -13,7 +13,7 @@
         tb_user: tibero
         tb_base: /opt/tmaxsoft
         tb_passwd: '$6$FpwzW7cBVP/3K2$CAWIA9PU49uKTexwTrLRDcO4LAiVOaCi4P3r6zGEn6DJhcXJwAwXMwlolPWMrdS6MT2x1faGjWXwWEnSv5Fog.'
-        tb_pkg_name: "tibero6-bin-FS06_CS_1808-linux64-182050-opt-20201110235949-tested.tar.gz"
+        tb_pkg_name: "tibero6-bin-FS07_CS_2005-linux64-186930-opt-tested.tar.gz"
         tb_sys_passwd: tibero
         tb_group: dba
         tb_sid: tibero
