@@ -1,0 +1,30 @@
+- name: install tibero 
+  hosts: localhost
+  connection: local
+  become: yes
+
+  #- name: install tibero 
+  #hosts: tibero
+  #become: yes
+
+  roles:
+    - role: tibero
+      vars: 
+        tb_user: tibero
+        tb_base: /opt/tmaxsoft
+        tb_passwd: '$6$FpwzW7cBVP/3K2$CAWIA9PU49uKTexwTrLRDcO4LAiVOaCi4P3r6zGEn6DJhcXJwAwXMwlolPWMrdS6MT2x1faGjWXwWEnSv5Fog.'
+        tb_pkg_name: "tibero6-bin-FS06_CS_1808-linux64-182050-opt-20201110235949-tested.tar.gz"
+        tb_sys_passwd: tibero
+        tb_group: dba
+        tb_sid: tibero
+        memory_target: 3G
+        total_shm_size: 2088M
+        db_writer_count: 12
+        log_buffer: 300M
+        db_cache_size: 512M
+        max_session_count: 100
+        redo_size: 300M
+        tb_listener_port: 8629
+        db_character_set: UTF8
+        #db_character_set: ZHT16MSWIN950
+        db_national_charater_set: UTF16
