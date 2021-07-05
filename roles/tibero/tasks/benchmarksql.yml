@@ -1,0 +1,17 @@
+- name: upload BenchmarkSQL pakcage
+  copy:
+    src: "benchmarksql.tgz"
+    dest: "{{staging_path}}/"
+  become: yes
+  become_user: "{{tb_user}}"  
+
+- name: unarchive BenchmarkSQL
+  unarchive: 
+    src : "{{item}}" 
+    dest: "{{tb_base}}"
+    remote_src: yes
+    # mode : 0755
+  become: yes
+  become_user: "{{tb_user}}"  
+  with_items:
+    - "{{staging_path}}/benchmarksql.tgz"
